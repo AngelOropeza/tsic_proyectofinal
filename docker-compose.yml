@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql
+    container_name: tsic-mysql
+    environment:
+      MYSQL_DATABASE: tsic
+      MYSQL_USER: angel
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: admin
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./dbdata:/var/lib/mysql
+    restart: always
+    
+  web:
+    image: angeloropeza/tsic_php
+    container_name: tsic-php
+    ports:
+      - "80:80"
+    volumes:
+      - ./www:/var/www/html
+    links:
+      - mysql
