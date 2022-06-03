@@ -1,0 +1,17 @@
+#PARA CORREGIR EL X509 CERTIFICATE
+cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
+#PASOS PARA LEVANTAR K8S
+export KUBECONFIG=/etc/kubernetes/admin.conf
+swapoff -a
+systemctl stop firewalld
+kubeadm reset
+systemctl restart kubelet
+kubeadm init
+
+#OBTENER IP DEL CONTAINER
+ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <ID_CONTAINER>
+
+# COMANDOS NECESARIOS
+export kubever=$(kubectl version | base64 | tr -d '\n')
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
